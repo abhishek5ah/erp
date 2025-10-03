@@ -17,7 +17,6 @@ class TabsBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-
     final pillBg = colorScheme.surfaceContainer;
     final borderColor = colorScheme.outline;
     final selectedTabBg = colorScheme.primary;
@@ -25,46 +24,79 @@ class TabsBar extends StatelessWidget {
     final selectedText = colorScheme.surface;
     final unselectedText = colorScheme.onSurface;
 
-    return Material(
-      color: pillBg,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(14),
-        side: BorderSide(color: borderColor, width: 0.5),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(2),
-        child: Wrap(
-          spacing: 4,
-          runSpacing: 4,
-          alignment: WrapAlignment.start,
-          children: List.generate(tabs.length, (i) {
-            return GestureDetector(
-              onTap: () => onChanged(i),
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 160),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 10,
-                ),
-                decoration: BoxDecoration(
-                  color: selectedIndex == i ? selectedTabBg : unselectedTabBg,
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                child: Text(
-                  tabs[i],
-                  style: TextStyle(
-                    color: selectedIndex == i ? selectedText : unselectedText,
-                    fontWeight: selectedIndex == i
-                        ? FontWeight.bold
-                        : FontWeight.normal,
-                    fontSize: 16,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Responsive scale: adjust min and max as needed
+        double baseWidth = 360; // Best for typical phone size
+        double scale = (constraints.maxWidth / baseWidth).clamp(0.68, 1.1);
+
+        // Responsive border radius for pill and tabs
+        double pillRadius = 20 * scale;
+        double tabHorizontalPadding = 40 * scale;
+        double tabVerticalPadding = 12 * scale;
+        double fontSize = 16 * scale;
+        double spacing = 4 * scale;
+
+        return Material(
+          color: pillBg,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(pillRadius),
+            side: BorderSide(color: borderColor, width: 0.5),
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(2 * scale),
+            child: Wrap(
+              spacing: spacing,
+              runSpacing: spacing,
+              alignment: WrapAlignment.start,
+              children: List.generate(tabs.length, (i) {
+                // Calculate responsive border radius
+                BorderRadius borderRadius;
+                if (tabs.length == 1) {
+                  borderRadius = BorderRadius.circular(pillRadius);
+                } else if (i == 0) {
+                  borderRadius = BorderRadius.horizontal(
+                    left: Radius.circular(pillRadius),
+                    right: Radius.circular(0),
+                  );
+                } else if (i == tabs.length - 1) {
+                  borderRadius = BorderRadius.horizontal(
+                    left: Radius.circular(0),
+                    right: Radius.circular(pillRadius),
+                  );
+                } else {
+                  borderRadius = BorderRadius.zero;
+                }
+
+                return GestureDetector(
+                  onTap: () => onChanged(i),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 180),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: tabHorizontalPadding,
+                      vertical: tabVerticalPadding,
+                    ),
+                    decoration: BoxDecoration(
+                      color: selectedIndex == i ? selectedTabBg : unselectedTabBg,
+                      borderRadius: borderRadius,
+                    ),
+                    child: Text(
+                      tabs[i],
+                      style: TextStyle(
+                        color: selectedIndex == i ? selectedText : unselectedText,
+                        fontWeight: selectedIndex == i ? FontWeight.bold : FontWeight.normal,
+                        fontSize: fontSize,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
                   ),
-                ),
-              ),
-            );
-          }),
-        ),
-      ),
+                );
+              }),
+            ),
+          ),
+        );
+      },
     );
   }
 }

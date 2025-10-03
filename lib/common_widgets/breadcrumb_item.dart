@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ppv_components/app/route_labels.dart';
 
 class Breadcrumbs extends StatelessWidget {
   final String? currentLocation;
@@ -20,18 +19,19 @@ class Breadcrumbs extends StatelessWidget {
 
     String normalizePath(String inputPath) {
       final segs = inputPath.split('/');
-      if (segs.length > 2) {
-        if (segs[1] == 'finance') {
-          if (segs[2] == 'invoices') {
-            return '/finance/invoices';
-          }
-          if (segs[2] == 'expense') {
-            return '/finance/expense';
-          }
+
+      if (segs.length > 2 && segs[1] == 'finance') {
+        final secondSegment = segs[2];
+
+        if (secondSegment == 'invoices' ||
+            secondSegment == 'expense' ||
+            secondSegment == 'account') {
+          return '/finance';
         }
       }
       return inputPath;
     }
+
 
     for (var i = 0; i < segments.length; i++) {
       path += "/${segments[i]}";

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ppv_components/common_widgets/button/primary_button.dart';
 import 'package:ppv_components/common_widgets/button/secondary_button.dart';
 
@@ -29,7 +30,9 @@ class InvoiceHeaderWidget extends StatelessWidget {
             children: [
               // Back Arrow
               IconButton(
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () {
+                  context.go('/finance');
+                },
                 icon: Icon(Icons.arrow_back, color: cs.onSurface, size: 26),
                 tooltip: 'Back',
                 style: IconButton.styleFrom(

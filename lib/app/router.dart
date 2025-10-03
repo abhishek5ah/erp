@@ -18,13 +18,12 @@ import 'package:ppv_components/features/pantry/screen/pantry_page.dart';
 import 'package:ppv_components/features/projects/screen/projects_page.dart';
 import 'package:ppv_components/features/reports/screen/reports_page.dart';
 import 'package:ppv_components/features/vendors/screen/vendors_page.dart';
-import 'package:ppv_components/features/finance/screens/accounts/account_detail_page.dart';
 
 
 
 
 final GoRouter router = GoRouter(
-  initialLocation: '/finance/account/:id',
+  initialLocation: '/finance',
   routes: [
     ShellRoute(
       builder: (context, state, child) => LayoutPage(child: child),

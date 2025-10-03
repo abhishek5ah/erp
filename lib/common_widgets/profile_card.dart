@@ -7,7 +7,9 @@ class ProfileInfoCard extends StatelessWidget {
   final String phone;
   final String source;
   final Color? topBarColor;
+  final double cardRadius;
   final double contentPadding;
+  final double spacingBetweenFields;
 
   const ProfileInfoCard({
     super.key,
@@ -17,127 +19,132 @@ class ProfileInfoCard extends StatelessWidget {
     required this.phone,
     required this.source,
     this.topBarColor,
-    this.contentPadding = 16,
+    this.cardRadius = 18,
+    this.contentPadding = 20,
+    this.spacingBetweenFields = 14,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final cardBg = theme.colorScheme.surfaceContainer;
-    final labelColor = theme.colorScheme.onSurface;
-    final topColor = topBarColor ?? theme.colorScheme.primary;
-    final fieldBg = theme.colorScheme.onSurface.withValues(alpha:0.09);
+    final cardBg = theme.colorScheme.surface;
+    final labelColor = theme.colorScheme.onSurface.withOpacity(0.9);
+    final fieldBg = theme.colorScheme.onSurface.withOpacity(0.18);
     final fieldText = theme.colorScheme.onSurface;
+    final topColor = topBarColor ?? theme.colorScheme.primary;
 
     return Container(
       decoration: BoxDecoration(
         color: cardBg,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(cardRadius),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha:0.04),
-            blurRadius: 4,
-            offset: const Offset(1, 2),
+            color: Colors.black.withValues(alpha:0.06),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: double.infinity,
-            // Adjust vertical padding for smaller screens if contentPadding is very small
-            padding: EdgeInsets.symmetric(vertical: contentPadding / 1.5),
-            decoration: BoxDecoration(
-              color: topColor,
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(14),
-                topRight: Radius.circular(14),
-              ),
-            ),
-            child: Center(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: contentPadding / 2),
-                child: Text(
-                  title,
-                  style: TextStyle( // Use TextStyle for more control
-                    fontSize: 19, // You might want to make this responsive too
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          double scale = (constraints.maxWidth / 300).clamp(0.7, 1.0);
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // Top Bar with Title
+              Container(
+                decoration: BoxDecoration(
+                  color: topColor,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(cardRadius - 2),
+                    topRight: Radius.circular(cardRadius - 2),
                   ),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1, // Ensure title also truncates
+                ),
+                padding: EdgeInsets.symmetric(vertical: contentPadding * 0.7),
+                child: Center(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: contentPadding / 2),
+                    child: Text(
+                      title,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 23 * scale,
+                        letterSpacing: 1.2,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: contentPadding, vertical: contentPadding / 1.5),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  _infoRow('Company', company, labelColor, fieldBg, fieldText),
-                  const SizedBox(height: 12),
-                  _infoRow('Email', email, labelColor, fieldBg, fieldText),
-                  const SizedBox(height: 12),
-                  _infoRow('Phone', phone, labelColor, fieldBg, fieldText),
-                  const SizedBox(height: 12),
-                  _infoRow('Source', source, labelColor, fieldBg, fieldText),
-                ],
-              ),
 
-            ),
-          ),
-        ],
+              // Content fields
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.all(contentPadding),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _fieldRow('Company', company, labelColor, fieldBg, fieldText, scale),
+                        SizedBox(height: spacingBetweenFields),
+                        _fieldRow('Email', email, labelColor, fieldBg, fieldText, scale),
+                        SizedBox(height: spacingBetweenFields),
+                        _fieldRow('Phone', phone, labelColor, fieldBg, fieldText, scale),
+                        SizedBox(height: spacingBetweenFields),
+                        _fieldRow('Source', source, labelColor, fieldBg, fieldText, scale),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
 
-  static Widget _infoRow(
-      String label,
-      String value,
-      Color labelColor,
-      Color fieldBg,
-      Color fieldText,
-      ) {
-    return Expanded( // Make each info row take equal space if possible
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(
-            width: 72, // we need to adjust this for small screen
+  static Widget _fieldRow(String label, String value, Color labelColor, Color fieldBg,
+      Color fieldText, double scale) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        SizedBox(
+          width: 85 * scale,
+          child: Text(
+            label,
+            style: TextStyle(
+              color: labelColor,
+              fontWeight: FontWeight.w500,
+              fontSize: 15 * scale,
+            ),
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+          ),
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical: 8 * scale, horizontal: 12 * scale),
+            decoration: BoxDecoration(
+              color: fieldBg,
+              borderRadius: BorderRadius.circular(9 * scale),
+            ),
             child: Text(
-              label,
+              value,
               style: TextStyle(
-                color: labelColor,
-                fontWeight: FontWeight.w600,
-                fontSize: 14,
+                color: fieldText,
+                fontSize: 15 * scale,
               ),
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
             ),
           ),
-          const SizedBox(width: 12), // Added a small fixed space
-          Expanded( // This Expanded is crucial for the value field
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-              decoration: BoxDecoration(
-                color: fieldBg,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              alignment: Alignment.centerLeft,
-              child: Text(
-                value,
-                style: TextStyle(color: fieldText, fontSize: 14),
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-              ),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

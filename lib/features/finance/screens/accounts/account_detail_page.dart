@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ppv_components/features/finance/data/mock_account_db.dart';
 import 'package:ppv_components/features/finance/model/account_model.dart';
+import 'package:ppv_components/features/finance/screens/accounts/widgets/account_header.dart';
 
 class AccountDetailPage extends StatelessWidget {
   final String accountId;
@@ -10,7 +11,7 @@ class AccountDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Account account = mockAccounts.firstWhere(
-      (acc) => acc.code == accountId,
+          (acc) => acc.code == accountId,
       orElse: () => Account(
         code: '',
         name: '',
@@ -27,20 +28,17 @@ class AccountDetailPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: colorScheme.surface,
-      appBar: AppBar(
-        title: const Text('Account Details'),
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        foregroundColor: colorScheme.onSurface,
-      ),
       body: LayoutBuilder(
         builder: (context, constraints) {
+          Widget content;
           if (constraints.maxWidth < 650) {
-            return SingleChildScrollView(
+            content = SingleChildScrollView(
               padding: const EdgeInsets.all(24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  AccountHeaderWidget(accountCode: account.code),
+                  const SizedBox(height: 20),
                   _buildAccountCard(account, colorScheme),
                   const SizedBox(height: 20),
                   _buildHistoryCard(transactions, colorScheme),
@@ -48,28 +46,31 @@ class AccountDetailPage extends StatelessWidget {
               ),
             );
           } else {
-            return SingleChildScrollView(
+            content = SingleChildScrollView(
               padding: const EdgeInsets.all(24),
-              child: Row(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    flex: 1,
-                    child: _buildAccountCard(account, colorScheme),
-                  ),
-                  const SizedBox(width: 28),
-                  Expanded(
-                    flex: 1,
-                    child: _buildHistoryCard(transactions, colorScheme),
+                  AccountHeaderWidget(accountCode: account.code),
+                  const SizedBox(height: 20),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(flex: 1, child: _buildAccountCard(account, colorScheme)),
+                      const SizedBox(width: 28),
+                      Expanded(flex: 1, child: _buildHistoryCard(transactions, colorScheme)),
+                    ],
                   ),
                 ],
               ),
             );
           }
+          return content;
         },
       ),
     );
   }
+
 
   Widget _buildAccountCard(Account account, ColorScheme colorScheme) {
     TextStyle labelStyle = TextStyle(fontWeight: FontWeight.w700, fontSize: 16);

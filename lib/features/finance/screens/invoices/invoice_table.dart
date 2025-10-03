@@ -137,10 +137,10 @@ class _InvoiceTableViewState extends State<InvoiceTableView> {
               child: Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: colorScheme.primaryContainer,
+                  color: colorScheme.surfaceContainerHighest,
                   borderRadius: BorderRadius.circular(22),
                 ),
-                padding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
+                padding: const EdgeInsets.fromLTRB(24, 20, 24, 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

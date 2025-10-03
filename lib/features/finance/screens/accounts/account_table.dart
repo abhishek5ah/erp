@@ -65,7 +65,7 @@ class _AccountTableViewState extends State<AccountTableView> {
           ),
           DataCell(
             Text(
-              account.balance, // Now using the balance field from AccountModel
+              account.balance, // using the balance field from AccountModel
               style: TextStyle(color: colorScheme.onSurface),
             ),
           ),
@@ -112,10 +112,10 @@ class _AccountTableViewState extends State<AccountTableView> {
               child: Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: colorScheme.primaryContainer,
+                  color: colorScheme.surfaceContainerHigh,
                   borderRadius: BorderRadius.circular(22),
                 ),
-                padding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
+                padding: const EdgeInsets.fromLTRB(24, 20, 24, 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

@@ -99,7 +99,7 @@ class _SidebarState extends State<Sidebar> with SingleTickerProviderStateMixin {
                       if (isExpanded)
                         Flexible(
                           child: Text(
-                            "Menu",
+                            "ERP",
                             style: TextStyle(
                               color: colors.onSurface,
                               fontSize: 18,
