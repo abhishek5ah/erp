@@ -44,7 +44,7 @@ class TabsBar extends StatelessWidget {
             side: BorderSide(color: borderColor, width: 0.5),
           ),
           child: Padding(
-            padding: EdgeInsets.all(2 * scale),
+            padding: EdgeInsets.all(1.2 * scale),
             child: Wrap(
               spacing: spacing,
               runSpacing: spacing,

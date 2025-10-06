@@ -12,6 +12,10 @@ class ActivityWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: cs.surfaceContainer, 
         borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: cs.outline,   // Use outline color from theme
+          width: 0.5,          // Border width
+        ),
         boxShadow: [
           BoxShadow(
             color: cs.shadow.withValues(alpha:0.05),
@@ -71,7 +75,7 @@ class _ActivityItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 6.0),
       child: Row(
         children: [
-          Icon(Icons.check_circle, size: 18, color: cs.onSurface), // now uses onSurface
+          Icon(Icons.check_circle, size: 18, color: cs.onSurface),
           const SizedBox(width: 8),
           Expanded(
             child: Text(

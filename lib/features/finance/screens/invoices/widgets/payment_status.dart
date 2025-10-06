@@ -13,6 +13,10 @@ class PaymentStatusWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: cs.surfaceContainer, // uses theme card color
         borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: cs.outline,   // Use outline color from theme
+          width: 0.5,          // Border width
+        ),
         boxShadow: [
           BoxShadow(
             color: cs.shadow.withValues(alpha:0.05),

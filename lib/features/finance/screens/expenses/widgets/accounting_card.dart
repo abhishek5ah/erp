@@ -30,7 +30,7 @@ class AccountingCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: Theme.of(context).dividerColor,
-            width: 0.25,
+            width: 0.5,
           ),
         ),
         width: double.infinity,

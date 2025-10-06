@@ -17,7 +17,7 @@ class FinanceMainPage extends StatefulWidget {
 }
 
 class _FinanceMainPageState extends State<FinanceMainPage> {
-  int tabIndex = 2;
+  int tabIndex = 0;
 
   @override
   Widget build(BuildContext context) {

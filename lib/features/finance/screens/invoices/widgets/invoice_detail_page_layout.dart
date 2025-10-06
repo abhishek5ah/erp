@@ -18,6 +18,7 @@ class InvoiceDetailPageLayout extends StatelessWidget {
     );
 
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: LayoutBuilder(
         builder: (context, constraints) {
           if (constraints.maxWidth > 900) {

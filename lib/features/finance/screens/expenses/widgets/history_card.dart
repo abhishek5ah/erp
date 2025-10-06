@@ -31,7 +31,7 @@ class HistorySection extends StatelessWidget {
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surfaceContainer,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Theme.of(context).dividerColor, width: 0.25),
+          border: Border.all(color: Theme.of(context).dividerColor, width: 0.5),
         ),
         padding: const EdgeInsets.all(24),
         child: Column(

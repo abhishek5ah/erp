@@ -5,17 +5,20 @@ import 'package:ppv_components/common_widgets/button/secondary_button.dart';
 class ActionCard extends StatelessWidget {
   final VoidCallback? onAddReceipt;
   final VoidCallback? onExportPdf;
+
   const ActionCard({super.key, this.onAddReceipt, this.onExportPdf});
 
   @override
   Widget build(BuildContext context) {
-
     return Card(
       child: Container(
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surfaceContainer,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Theme.of(context).colorScheme.outline, width: 0.25),
+          border: Border.all(
+            color: Theme.of(context).colorScheme.outline,
+            width: 0.5,
+          ),
         ),
         padding: const EdgeInsets.all(20),
         width: double.infinity,

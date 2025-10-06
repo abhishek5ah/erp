@@ -30,7 +30,7 @@ class AttachmentsCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surfaceContainer,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: colorScheme.outline, width: 0.25),
+          border: Border.all(color: colorScheme.outline, width: 0.5),
         ),
         padding: const EdgeInsets.all(24),
         child: Column(

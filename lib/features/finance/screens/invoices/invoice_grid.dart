@@ -57,9 +57,9 @@ class _InvoiceGridViewState extends State<InvoiceGridView> {
                           )
                               : null,
                           borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            topRight: Radius.circular(18),
-                            bottomLeft: Radius.circular(18),
+                            topLeft: Radius.circular(24),
+                            topRight: Radius.circular(20),
+                            bottomLeft: Radius.circular(20),
                           ),
                         ),
                         child: ProfileInfoCard(

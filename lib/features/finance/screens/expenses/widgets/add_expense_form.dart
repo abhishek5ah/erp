@@ -63,7 +63,7 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min, // 👈 Wrap content height
+              mainAxisSize: MainAxisSize.min, //  content height
               children: [
                 // Title
                 Row(

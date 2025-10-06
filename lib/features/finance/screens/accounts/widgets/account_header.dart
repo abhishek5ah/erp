@@ -20,6 +20,10 @@ class AccountHeaderWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color: cs.surfaceContainer,
           borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+          color: Theme.of(context).colorScheme.outline,
+          width: 0.5,
+        ),
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
@@ -79,7 +83,7 @@ class AccountHeaderWidget extends StatelessWidget {
               ),
 
               const Spacer(),
-              // Add action buttons here if needed (edit, export, etc.)
+              // Add action buttons  if needed like edit,delete
             ],
           ),
         ),

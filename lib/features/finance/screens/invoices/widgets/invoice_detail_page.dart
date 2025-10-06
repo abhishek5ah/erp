@@ -23,6 +23,13 @@ class _InvoiceDetailsCardState extends State<InvoiceDetailsCard> {
     return Card(
       margin: const EdgeInsets.only(left: 8, right: 8, bottom: 6),
       color: colorScheme.surfaceContainer,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(
+          color: colorScheme.outline, // Use outline color from theme
+          width: 0.5,                //  border width
+        ),
+      ),
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(32),
         child: Column(

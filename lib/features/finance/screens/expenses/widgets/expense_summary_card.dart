@@ -18,7 +18,7 @@ class ExpenseSummaryCard extends StatelessWidget {
           color: colorScheme.surfaceContainer,
           border: Border.all(
             color: colorScheme.outline, // use theme outline for border
-            width: 0.25,
+            width: 0.5,
           ),
           borderRadius: BorderRadius.circular(12), //  card radius
         ),

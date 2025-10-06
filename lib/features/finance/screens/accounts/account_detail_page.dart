@@ -11,7 +11,7 @@ class AccountDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Account account = mockAccounts.firstWhere(
-          (acc) => acc.code == accountId,
+      (acc) => acc.code == accountId,
       orElse: () => Account(
         code: '',
         name: '',
@@ -56,9 +56,15 @@ class AccountDetailPage extends StatelessWidget {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(flex: 1, child: _buildAccountCard(account, colorScheme)),
+                      Expanded(
+                        flex: 1,
+                        child: _buildAccountCard(account, colorScheme),
+                      ),
                       const SizedBox(width: 28),
-                      Expanded(flex: 1, child: _buildHistoryCard(transactions, colorScheme)),
+                      Expanded(
+                        flex: 1,
+                        child: _buildHistoryCard(transactions, colorScheme),
+                      ),
                     ],
                   ),
                 ],
@@ -71,13 +77,18 @@ class AccountDetailPage extends StatelessWidget {
     );
   }
 
-
   Widget _buildAccountCard(Account account, ColorScheme colorScheme) {
     TextStyle labelStyle = TextStyle(fontWeight: FontWeight.w700, fontSize: 16);
     TextStyle valueStyle = TextStyle(fontWeight: FontWeight.w500, fontSize: 16);
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(14),
+        side: BorderSide(
+          color: colorScheme.outline, // Uses theme outline color
+          width: 0.5, // Thin border
+        ),
+      ),
       color: colorScheme.surfaceContainer,
       child: Container(
         padding: const EdgeInsets.fromLTRB(28, 34, 28, 34),
@@ -164,7 +175,10 @@ class AccountDetailPage extends StatelessWidget {
     );
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(14),
+        side: BorderSide(color: colorScheme.outline, width: 0.5),
+      ),
       color: colorScheme.surfaceContainer,
       child: Container(
         padding: const EdgeInsets.fromLTRB(28, 34, 28, 0),

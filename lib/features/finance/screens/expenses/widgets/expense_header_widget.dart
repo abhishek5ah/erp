@@ -15,11 +15,15 @@ class ExpenseHeaderWidget extends StatelessWidget {
     final isTablet = width < 1150;
 
     return Padding(
-      padding: const EdgeInsets.only(left: 12, top: 6, right: 12, bottom: 8),
+      padding: const EdgeInsets.only(left: 6, top: 6, right: 12, bottom: 8),
       child: Container(
         decoration: BoxDecoration(
           color: cs.surfaceContainer,
           borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: Theme.of(context).colorScheme.outline,
+            width: 0.5,
+          ),
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
