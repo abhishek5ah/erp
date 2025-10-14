@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ppv_components/common_widgets/profile_card.dart';
-import 'package:ppv_components/core/utils/status_utils.dart';
+import 'package:ppv_components/core/utils/finance_status_color.dart';
 import 'package:ppv_components/core/utils/responsive.dart';
 import 'package:ppv_components/features/finance/data/mock_invoice_db.dart';
 
@@ -47,11 +47,11 @@ class _InvoiceGridViewState extends State<InvoiceGridView> {
                           border: isHovered
                               ? Border(
                             top: BorderSide(
-                              color: getStatusColor(invoice.status),
+                              color: invoiceStatusColor(invoice.invoice_status),
                               width: 6,
                             ),
                             left: BorderSide(
-                              color: getStatusColor(invoice.status),
+                              color: invoiceStatusColor(invoice.invoice_status),
                               width: 6,
                             ),
                           )
@@ -64,11 +64,13 @@ class _InvoiceGridViewState extends State<InvoiceGridView> {
                         ),
                         child: ProfileInfoCard(
                           title: invoice.customer,
-                          company: invoice.customer,
-                          email: invoice.email,
-                          phone: invoice.phone,
-                          source: invoice.source,
-                          topBarColor: getStatusColor(invoice.status),
+                          fields: {
+                            'Company':invoice.customer,
+                            'Date':invoice.invoice_date,
+                            'Due':invoice.due_date,
+                            'Amount':invoice.amount,
+                          },
+                          topBarColor: invoiceStatusColor(invoice.invoice_status),
                         ),
                       ),
                     );

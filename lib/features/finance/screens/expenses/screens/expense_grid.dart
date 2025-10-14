@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ppv_components/core/utils/finance_status_color.dart';
 import 'package:ppv_components/core/utils/responsive.dart';
-import 'package:ppv_components/core/utils/status_utils.dart';
 import 'package:ppv_components/common_widgets/profile_card.dart';
 import 'package:ppv_components/features/finance/data/mock_expense_db.dart';
 
@@ -47,11 +47,11 @@ class _ExpenseGridState extends State<ExpenseGrid> {
                           border: isHovered
                               ? Border(
                             top: BorderSide(
-                              color: getStatusColor(expense.status),
+                              color: expenseStatusColor(expense.status),
                               width: 6,
                             ),
                             left: BorderSide(
-                              color: getStatusColor(expense.status),
+                              color: expenseStatusColor(expense.status),
                               width: 6,
                             ),
                           )
@@ -64,11 +64,13 @@ class _ExpenseGridState extends State<ExpenseGrid> {
                         ),
                         child: ProfileInfoCard(
                           title: expense.id,
-                          company: expense.vendor,
-                          email: expense.category,
-                          phone: expense.date,
-                          source: expense.amount,
-                          topBarColor: getStatusColor(expense.status),
+                          fields: {
+                            'Vendor':expense.vendor,
+                            'Category':expense.category,
+                            'Date':expense.date,
+                            'Amount':expense.amount
+                          },
+                          topBarColor: expenseStatusColor(expense.status),
                         ),
                       ),
                     );

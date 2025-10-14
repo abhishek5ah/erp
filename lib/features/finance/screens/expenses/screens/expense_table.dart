@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ppv_components/common_widgets/badge.dart';
 import 'package:ppv_components/common_widgets/button/primary_button.dart';
 import 'package:ppv_components/common_widgets/button/toggle_button.dart';
 import 'package:ppv_components/common_widgets/custom_table.dart';
-import 'package:ppv_components/core/utils/status_utils.dart';
+import 'package:ppv_components/core/utils/finance_status_color.dart';
 import 'package:ppv_components/features/finance/data/mock_expense_db.dart';
 import 'package:ppv_components/features/finance/screens/expenses/screens/expense_grid.dart';
 import 'package:ppv_components/features/finance/screens/expenses/widgets/add_expense_form.dart';
@@ -24,7 +25,7 @@ class _ExpenseTableViewState extends State<ExpenseTableView> {
     final columns = [
       DataColumn(
         label: Text(
-          'Expense #',
+          'Expense',
           style: TextStyle(color: colorScheme.onSurface),
         ),
       ),
@@ -76,19 +77,11 @@ class _ExpenseTableViewState extends State<ExpenseTableView> {
             ),
           ),
           DataCell(
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
-              decoration: BoxDecoration(
-                color: getStatusColor(expense.status),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Text(
-                expense.status,
-                style: TextStyle(
-                  color: colorScheme.onPrimary,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+
+            BadgeChip(
+              label: expense.status,
+              statusKey: expense.status, // pass status string
+              statusColorFunc: expenseStatusColor,
             ),
           ),
           DataCell(

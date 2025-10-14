@@ -1,6 +1,6 @@
 import 'package:ppv_components/features/finance/data/mock_history.dart';
-import 'package:ppv_components/features/finance/model/accounting_detail.dart';
-import 'package:ppv_components/features/finance/model/expense.dart';
+import 'package:ppv_components/features/finance/model/expense/accounting_detail.dart';
+import 'package:ppv_components/features/finance/model/expense/expense_view_model.dart';
 
 List<Expense> mockExpenses = [
   Expense(

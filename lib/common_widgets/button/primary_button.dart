@@ -5,6 +5,7 @@ class PrimaryButton extends StatelessWidget {
   final IconData? icon;
   final ButtonStyle? style;
   final Color? backgroundColor;
+  final Color? foregroundColor; // dynamic text color
   final VoidCallback? onPressed;
   final bool isLoading;
   final bool isDisabled;
@@ -15,38 +16,45 @@ class PrimaryButton extends StatelessWidget {
     this.icon,
     this.style,
     this.backgroundColor,
+    this.foregroundColor, // Accept dynamic text color
     required this.onPressed,
     this.isLoading = false,
     this.isDisabled = false,
-
   });
 
   @override
   Widget build(BuildContext context) {
     final effectiveOnPressed = (isDisabled || isLoading) ? null : onPressed;
+    final theme = Theme.of(context);
+    final defaultColorScheme = theme.colorScheme;
 
-    final ButtonStyle style =
-    FilledButton.styleFrom(
-      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-      minimumSize: const Size(0, 54),
-    ).copyWith(
-      backgroundColor: WidgetStateProperty.resolveWith<Color>((states) {
-        final baseColor = backgroundColor ?? Theme.of(context).colorScheme.primary;
-        if (states.contains(WidgetState.disabled)) {
-          return baseColor.withValues(alpha:0.4);
-        } else if (states.contains(WidgetState.pressed)) {
-          return baseColor.withValues(alpha:0.7);
-        } else if (states.contains(WidgetState.hovered)) {
-          return baseColor.withValues(alpha:0.9);
-        }
-        return baseColor;
-      }),
-      foregroundColor: WidgetStateProperty.all(
-        Theme.of(context).colorScheme.onPrimary,
-      ),
-    );
+    final ButtonStyle defaultStyle =
+        FilledButton.styleFrom(
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
+          minimumSize: const Size(0, 54),
+        ).copyWith(
+          backgroundColor: WidgetStateProperty.resolveWith<Color>((states) {
+            final baseColor = backgroundColor ?? defaultColorScheme.primary;
+            if (states.contains(WidgetState.disabled)) {
+              return baseColor.withValues(alpha: 0.4);
+            } else if (states.contains(WidgetState.pressed)) {
+              return baseColor.withValues(alpha: 0.7);
+            } else if (states.contains(WidgetState.hovered)) {
+              return baseColor.withValues(alpha: 0.9);
+            }
+            return baseColor;
+          }),
+          foregroundColor: WidgetStateProperty.all(
+            foregroundColor ?? theme.colorScheme.onPrimary, //default text color
+          ),
+        );
 
+    final ButtonStyle finalStyle = style != null
+        ? style!.merge(defaultStyle)
+        : defaultStyle;
 
     Widget childContent;
     if (isLoading) {
@@ -56,7 +64,7 @@ class PrimaryButton extends StatelessWidget {
         child: CircularProgressIndicator(
           strokeWidth: 2,
           valueColor: AlwaysStoppedAnimation(
-            Theme.of(context).colorScheme.onPrimary,
+            foregroundColor ?? theme.colorScheme.onPrimary,
           ),
         ),
       );
@@ -64,21 +72,27 @@ class PrimaryButton extends StatelessWidget {
       childContent = Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 18),
+          Icon(icon, size: 18, color: foregroundColor),
           const SizedBox(width: 8),
-          Text(label, style: const TextStyle(fontWeight: FontWeight.w600)),
+          Text(
+            label,
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              color: foregroundColor,
+            ),
+          ),
         ],
       );
     } else {
       childContent = Text(
         label,
-        style: const TextStyle(fontWeight: FontWeight.w600),
+        style: TextStyle(fontWeight: FontWeight.w600, color: foregroundColor),
       );
     }
 
     return FilledButton(
       onPressed: effectiveOnPressed,
-      style: style,
+      style: finalStyle,
       child: childContent,
     );
   }

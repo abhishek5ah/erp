@@ -1,4 +1,4 @@
-import 'package:ppv_components/features/finance/model/attachement_model.dart';
+import 'package:ppv_components/features/finance/model/expense/attachement_model.dart';
 
 
 List<Attachment> mockAttachments = [
@@ -6,5 +6,4 @@ List<Attachment> mockAttachments = [
     filename: 'Receipt.pdf',
     addedOn: DateTime.parse('2023-04-02'),
   ),
-  // Add more as needed
 ];

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ppv_components/common_widgets/profile_card.dart';
-import 'package:ppv_components/core/utils/account_status_colors.dart';
+import 'package:ppv_components/core/utils/finance_status_color.dart';
 import 'package:ppv_components/core/utils/responsive.dart';
 import 'package:ppv_components/features/finance/data/mock_account_db.dart';
 
@@ -48,11 +48,11 @@ class _AccountGridViewState extends State<AccountGridView> {
                         border: isHovered
                             ? Border(
                           top: BorderSide(
-                            color: getAccountTypeColor(account.type),
+                            color: getAccountStatusColor(account.type),
                             width: 6,
                           ),
                           left: BorderSide(
-                            color: getAccountTypeColor(account.type),
+                            color: getAccountStatusColor(account.type),
                             width: 6,
                           ),
                         )
@@ -65,11 +65,13 @@ class _AccountGridViewState extends State<AccountGridView> {
                       ),
                       child: ProfileInfoCard(
                         title: account.code,
-                        company: account.name,
-                        email: account.type,
-                        phone: account.balance,
-                        source: account.balance,
-                        topBarColor: getAccountTypeColor(account.type),
+                        fields:{
+                          'Code':account.code,
+                          'Name':account.name,
+                          'Type':account.type,
+                          'Balance':account.balance,
+                        },
+                        topBarColor: getAccountStatusColor(account.type),
                       ),
                     ),
                   );

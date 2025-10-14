@@ -1,5 +1,5 @@
 import 'package:ppv_components/features/finance/data/mock_expense.dart';
-import 'package:ppv_components/features/finance/model/expense.dart';
+import 'package:ppv_components/features/finance/model/expense/expense_view_model.dart';
 
 
 class ExpensesController {

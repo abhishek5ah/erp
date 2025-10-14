@@ -10,7 +10,7 @@ class VendorInformationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final vendor = mockVendors.firstWhere(
-      (v) => v.name == vendorName,
+          (v) => v.name == vendorName,
       orElse: () => throw Exception('Vendor not found'),
     );
 
@@ -28,35 +28,39 @@ class VendorInformationCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
         ),
         padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Vendor Information',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            const SizedBox(height: 4),
-            Text(
-              'Expense vendor details',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Theme.of(
-                  context,
-                ).colorScheme.onSurface.withValues(alpha: 0.7),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Vendor Information',
+                style: Theme.of(context).textTheme.titleMedium,
               ),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              vendor.name,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            ),
-            const SizedBox(height: 2),
-            Text(vendor.address),
-            Text('Suite 456'), // If suite is a separate field, use vendor.suite
-            Text('${vendor.city}, ${vendor.state}'),
-            Text(vendor.country),
-            const SizedBox(height: 16),
-            PrimaryButton(label: 'View Vendor', onPressed: () {}),
-          ],
+              const SizedBox(height: 4),
+              Text(
+                'Expense vendor details',
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withAlpha(179), // 0.7 alpha approx 179 in 0-255
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                vendor.name,
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
+              const SizedBox(height: 2),
+              Text(vendor.address),
+              Text('Suite 456'), // If suite is a separate field, use vendor.suite
+              Text('${vendor.city}, ${vendor.state}'),
+              Text(vendor.country),
+              const SizedBox(height: 16),
+              PrimaryButton(label: 'View Vendor', onPressed: () {}),
+            ],
+          ),
         ),
       ),
     );

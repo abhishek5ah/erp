@@ -1,61 +1,65 @@
 import 'package:flutter/material.dart';
 
 class ActivityWidget extends StatelessWidget {
-  const ActivityWidget({super.key,  });
+  const ActivityWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final cs = theme.colorScheme;
     final text = theme.textTheme;
+
     return Container(
       decoration: BoxDecoration(
-        color: cs.surfaceContainer, 
+        color: cs.surfaceContainer,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: cs.outline,   // Use outline color from theme
-          width: 0.5,          // Border width
+          color: cs.outline,
+          width: 0.5,
         ),
         boxShadow: [
           BoxShadow(
-            color: cs.shadow.withValues(alpha:0.05),
+            color: cs.shadow.withAlpha(13), // 0.05 alpha converted to 0-255 scale
             blurRadius: 6,
             offset: const Offset(0, 2),
           ),
         ],
       ),
       padding: const EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Activity Widget",
-            style: text.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: cs.onSurface,
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Activity Widget",
+              style: text.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: cs.onSurface,
+              ),
             ),
-          ),
-          const SizedBox(height: 16),
-          _ActivityItem(
-            description: "Invoice created",
-            timestamp: "2023-04-05 10:23",
-            theme: theme,
-          ),
-          _ActivityItem(
-            description: "Invoice sent to client",
-            timestamp: "2023-04-05 12:00",
-            theme: theme,
-          ),
-          _ActivityItem(
-            description: "Payment received",
-            timestamp: "2023-04-15 09:45",
-            theme: theme,
-          ),
-        ],
+            const SizedBox(height: 16),
+            _ActivityItem(
+              description: "Invoice created",
+              timestamp: "2023-04-05 10:23",
+              theme: theme,
+            ),
+            _ActivityItem(
+              description: "Invoice sent to client",
+              timestamp: "2023-04-05 12:00",
+              theme: theme,
+            ),
+            _ActivityItem(
+              description: "Payment received",
+              timestamp: "2023-04-15 09:45",
+              theme: theme,
+            ),
+          ],
+        ),
       ),
     );
   }
 }
+
 class _ActivityItem extends StatelessWidget {
   final String description;
   final String timestamp;
@@ -71,6 +75,7 @@ class _ActivityItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final cs = theme.colorScheme;
     final text = theme.textTheme;
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6.0),
       child: Row(

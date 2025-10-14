@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 
 class ProfileInfoCard extends StatelessWidget {
   final String title;
-  final String company;
-  final String email;
-  final String phone;
-  final String source;
+  final Map<String, String> fields; // Dynamic fields as label-value pairs
   final Color? topBarColor;
   final double cardRadius;
   final double contentPadding;
@@ -14,10 +11,7 @@ class ProfileInfoCard extends StatelessWidget {
   const ProfileInfoCard({
     super.key,
     required this.title,
-    required this.company,
-    required this.email,
-    required this.phone,
-    required this.source,
+    required this.fields,
     this.topBarColor,
     this.cardRadius = 18,
     this.contentPadding = 20,
@@ -28,8 +22,8 @@ class ProfileInfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final cardBg = theme.colorScheme.surface;
-    final labelColor = theme.colorScheme.onSurface.withOpacity(0.9);
-    final fieldBg = theme.colorScheme.onSurface.withOpacity(0.18);
+    final labelColor = theme.colorScheme.onSurface.withValues(alpha:0.9);
+    final fieldBg = theme.colorScheme.onSurface.withValues(alpha:0.18);
     final fieldText = theme.colorScheme.onSurface;
     final topColor = topBarColor ?? theme.colorScheme.primary;
 
@@ -88,13 +82,10 @@ class ProfileInfoCard extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _fieldRow('Company', company, labelColor, fieldBg, fieldText, scale),
-                        SizedBox(height: spacingBetweenFields),
-                        _fieldRow('Email', email, labelColor, fieldBg, fieldText, scale),
-                        SizedBox(height: spacingBetweenFields),
-                        _fieldRow('Phone', phone, labelColor, fieldBg, fieldText, scale),
-                        SizedBox(height: spacingBetweenFields),
-                        _fieldRow('Source', source, labelColor, fieldBg, fieldText, scale),
+                        for (var entry in fields.entries) ...[
+                          _fieldRow(entry.key, entry.value, labelColor, fieldBg, fieldText, scale),
+                          SizedBox(height: spacingBetweenFields),
+                        ],
                       ],
                     ),
                   ),

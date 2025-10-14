@@ -6,7 +6,6 @@ class Account {
   final String totalBalance;
   final String spendBalance;
 
-
   Account({
     required this.code,
     required this.name,
@@ -15,4 +14,15 @@ class Account {
     required this.totalBalance,
     required this.spendBalance,
   });
+
+  factory Account.from(Map<String, dynamic> map) {
+    return Account(
+      code: map['code'] ?? '',
+      name: map['name'] ?? '',
+      type: map['type'] ?? '',
+      balance: map['balance'] ?? '',
+      totalBalance: map['totalBalance'] ?? '',
+      spendBalance: map['spendBalance'] ?? '',
+    );
+  }
 }

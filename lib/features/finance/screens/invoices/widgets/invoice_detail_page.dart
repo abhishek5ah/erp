@@ -90,17 +90,20 @@ class _InvoiceDetailsCardState extends State<InvoiceDetailsCard> {
             const SizedBox(height: 20),
 
             /// Meta Data
-            Row(
-              children: [
-                _MetaDataLine(label: "Invoice Number", value: invoice.number),
-                const SizedBox(width: 34),
-                _MetaDataLine(
-                    label: "Invoice Date", value: _formatDate(invoice.date)),
-                const SizedBox(width: 34),
-                _MetaDataLine(
-                    label: "Due Date", value: _formatDate(invoice.dueDate)),
-              ],
+            /// Meta Data
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  _MetaDataLine(label: "Invoice Number", value: invoice.number),
+                  const SizedBox(width: 34),
+                  _MetaDataLine(label: "Invoice Date", value: _formatDate(invoice.date)),
+                  const SizedBox(width: 34),
+                  _MetaDataLine(label: "Due Date", value: _formatDate(invoice.dueDate)),
+                ],
+              ),
             ),
+
             const SizedBox(height: 18),
 
             /// Tabs
@@ -174,7 +177,6 @@ class _PartyInfo extends StatelessWidget {
           party.email,
           style: TextStyle(
             color: colorScheme.primary,
-            decoration: TextDecoration.underline,
           ),
         ),
         Text(party.phone),

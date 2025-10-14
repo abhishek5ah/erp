@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ppv_components/features/finance/model/accounting_detail.dart';
+import 'package:ppv_components/features/finance/model/expense/accounting_detail.dart';
 
 class AccountingCard extends StatelessWidget {
   final AccountingDetail detail;

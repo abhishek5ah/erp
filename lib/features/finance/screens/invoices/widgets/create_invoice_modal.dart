@@ -84,7 +84,7 @@ class _CreateInvoiceModalState extends State<CreateInvoiceModal> {
     final colorScheme = theme.colorScheme;
 
     return Dialog(
-      backgroundColor: Colors.transparent, // Remove default dialog background
+      // backgroundColor: Colors.transparent,
       insetPadding: const EdgeInsets.all(12),
       child: LayoutBuilder(
         builder: (context, constraints) {

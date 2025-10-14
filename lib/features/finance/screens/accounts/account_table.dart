@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ppv_components/common_widgets/badge.dart';
 import 'package:ppv_components/common_widgets/button/toggle_button.dart';
 import 'package:ppv_components/common_widgets/custom_table.dart';
-import 'package:ppv_components/core/utils/account_status_colors.dart';
+import 'package:ppv_components/core/utils/finance_status_color.dart';
 import 'package:ppv_components/features/finance/data/mock_account_db.dart';
 import 'package:ppv_components/features/finance/screens/accounts/account_grid.dart';
 
@@ -48,19 +49,10 @@ class _AccountTableViewState extends State<AccountTableView> {
             Text(account.name, style: TextStyle(color: colorScheme.onSurface)),
           ),
           DataCell(
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 6),
-              decoration: BoxDecoration(
-                color: getAccountTypeColor(account.type),
-                borderRadius: BorderRadius.circular(18),
-              ),
-              child: Text(
-                account.type,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+            BadgeChip(
+              label: account.type,
+              statusKey: account.type,
+              statusColorFunc: getAccountStatusColor,
             ),
           ),
           DataCell(
@@ -75,10 +67,7 @@ class _AccountTableViewState extends State<AccountTableView> {
                 context.go('/finance/account/${account.code}');
               },
               style: OutlinedButton.styleFrom(
-                side: BorderSide(
-                  color: colorScheme.outline,
-                  width: 0.25,
-                ),
+                side: BorderSide(color: colorScheme.outline, width: 0.25),
                 foregroundColor: colorScheme.onSurface,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18),
@@ -138,8 +127,8 @@ class _AccountTableViewState extends State<AccountTableView> {
                               Text(
                                 'Manage your financial accounts',
                                 style: TextStyle(
-                                  color: colorScheme.onSurface.withOpacity(
-                                    0.65,
+                                  color: colorScheme.onSurface.withValues(
+                                    alpha: 0.65,
                                   ),
                                   fontSize: 16,
                                 ),

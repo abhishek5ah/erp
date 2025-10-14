@@ -77,81 +77,87 @@ class _SidebarState extends State<Sidebar> with SingleTickerProviderStateMixin {
         return Material(
           elevation: 4,
           color: colors.surfaceContainer,
-          child: SizedBox(
-            width: widthAnim.value,
-            child: Column(
-              children: [
-                const SizedBox(height: 16),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Row(
-                    children: [
-                      IconButton(
-                        icon: Icon(
-                          isExpanded ? Icons.arrow_back_ios_new_rounded : Icons.menu,
-                          color: colors.onSurface,
-                          size: 22,
-                        ),
-                        onPressed: toggleSidebar,
-                        splashRadius: 22,
-                      ),
-                      if (isExpanded) const SizedBox(width: 10),
-                      if (isExpanded)
-                        Flexible(
-                          child: Text(
-                            "ERP",
-                            style: TextStyle(
-                              color: colors.onSurface,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            softWrap: false,
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border(right: BorderSide(color: colors.outline, width: 0.5)),
+
+          ),
+            child: SizedBox(
+              width: widthAnim.value,
+              child: Column(
+                children: [
+                  const SizedBox(height: 16),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Row(
+                      children: [
+                        IconButton(
+                          icon: Icon(
+                            isExpanded ? Icons.arrow_back_ios_new_rounded : Icons.menu,
+                            color: colors.onSurface,
+                            size: 22,
                           ),
+                          onPressed: toggleSidebar,
+                          splashRadius: 22,
                         ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 10),
-                if (isExpanded) ...[
-                  CircleAvatar(
-                    radius: 28,
-                    backgroundColor: colors.surfaceContainerLow,
-                    child: Icon(
-                      Icons.person,
-                      color: colors.onSurface,
-                      size: 24,
+                        if (isExpanded) const SizedBox(width: 10),
+                        if (isExpanded)
+                          Flexible(
+                            child: Text(
+                              "ERP",
+                              style: TextStyle(
+                                color: colors.onSurface,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              softWrap: false,
+                            ),
+                          ),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 24),
-                ],
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: items.length,
-                    itemBuilder: (context, idx) {
-                      final item = items[idx];
-                      final isActive = idx == activeIndex;
+                  const SizedBox(height: 10),
+                  if (isExpanded) ...[
+                    CircleAvatar(
+                      radius: 28,
+                      backgroundColor: colors.surfaceContainerLow,
+                      child: Icon(
+                        Icons.person,
+                        color: colors.onSurface,
+                        size: 24,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                  ],
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: items.length,
+                      itemBuilder: (context, idx) {
+                        final item = items[idx];
+                        final isActive = idx == activeIndex;
 
-                      return _SidebarTile(
-                        icon: item.icon,
-                        label: item.label,
-                        route: item.route,
-                        isActive: isActive,
-                        collapsed: !isExpanded,
-                        onTap: () {
-                          context.go(item.route);
-                        },
-                        backgroundColor: isActive
-                            ? colors.surfaceContainerHigh
-                            : Colors.transparent,
-                        iconColor: isActive ? colors.primary : colors.onSurfaceVariant,
-                        textColor: isActive ? colors.primary : colors.onSurface,
-                      );
-                    },
+                        return _SidebarTile(
+                          icon: item.icon,
+                          label: item.label,
+                          route: item.route,
+                          isActive: isActive,
+                          collapsed: !isExpanded,
+                          onTap: () {
+                            context.go(item.route);
+                          },
+                          backgroundColor: isActive
+                              ? colors.onSurface
+                              : Colors.transparent,
+                          iconColor: isActive ? colors.surface : colors.onSurfaceVariant,
+                          textColor: isActive ? colors.surface : colors.onSurface,
+                        );
+                      },
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );

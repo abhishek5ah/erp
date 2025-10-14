@@ -1,4 +1,4 @@
-import 'package:ppv_components/features/finance/model/vendor.dart';
+import 'package:ppv_components/features/finance/model/expense/vendor.dart';
 
 List<Vendor> mockVendors = [
   Vendor(

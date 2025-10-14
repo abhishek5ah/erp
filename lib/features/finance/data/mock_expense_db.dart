@@ -1,4 +1,4 @@
-import 'package:ppv_components/features/finance/model/expense_modal.dart';
+import 'package:ppv_components/features/finance/model/expense/expense_modal.dart';
 
 final mockExpenses = [
   Expense(

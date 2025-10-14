@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ppv_components/features/finance/model/expense.dart';
+import 'package:ppv_components/features/finance/model/expense/expense_view_model.dart';
 
 class AttachmentsSection extends StatelessWidget {
   final List<Attachment> attachments;

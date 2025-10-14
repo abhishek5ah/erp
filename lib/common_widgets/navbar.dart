@@ -29,7 +29,7 @@ class Navbar extends StatelessWidget {
         border: Border(
           bottom: BorderSide(
             color: colorScheme.outline,
-            width: 0.2,
+            width: 0.5,
           ),
         ),
       ),
@@ -89,7 +89,7 @@ class Navbar extends StatelessWidget {
                       .join()
                       .toUpperCase(),
                   style: TextStyle(
-                    color: colorScheme.onSurface,
+                    color: colorScheme.surface,
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                   ),

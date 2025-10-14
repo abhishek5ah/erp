@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ppv_components/features/finance/model/history_model.dart';
+import 'package:ppv_components/features/finance/model/expense/history_model.dart';
 
 class HistorySection extends StatelessWidget {
   final List<ExpenseHistory> history;

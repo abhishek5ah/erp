@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ppv_components/common_widgets/button/primary_button.dart';
 
 class ExpenseHeaderWidget extends StatelessWidget {
   final String expenseId;
@@ -14,78 +15,92 @@ class ExpenseHeaderWidget extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
     final isTablet = width < 1150;
 
-    return Padding(
-      padding: const EdgeInsets.only(left: 6, top: 6, right: 12, bottom: 8),
-      child: Container(
-        decoration: BoxDecoration(
-          color: cs.surfaceContainer,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: Theme.of(context).colorScheme.outline,
-            width: 0.5,
+    return Container(
+      decoration: BoxDecoration(
+        color: cs.surface,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      child: Row(
+        children: [
+          // Title and subtitle
+          Expanded(
+            flex: isTablet ? 3 : 5,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Expense #$expenseId',
+                  style: text.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: cs.onSurface,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  "View expense details and history",
+                  style: text.bodyMedium?.copyWith(color: cs.onSurfaceVariant),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
           ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
+
+          const Spacer(),
+
+          // Action Buttons
+          Row(
             children: [
-              // Back Arrow Button
-              IconButton(
-                onPressed: () {
-                  context.go('/finance');
-                },
-                icon: Icon(Icons.arrow_back, color: cs.onSurface, size: 26),
-                tooltip: 'Back',
-                style: IconButton.styleFrom(
-                  minimumSize: const Size(40, 40),
-                  padding: EdgeInsets.zero,
+              PrimaryButton(label: 'Edit', icon: Icons.edit, onPressed: () {}),
+              const SizedBox(width: 10),
+              PrimaryButton(
+                label: 'Export',
+                icon: Icons.download,
+                onPressed: () {},
+                foregroundColor: cs.surface,
+                backgroundColor: cs.onSurface,
+              ),
+              const SizedBox(width: 10),
+              PrimaryButton(
+                label: 'Send',
+                icon: Icons.send,
+                onPressed: () {},
+                foregroundColor: cs.surface,
+                backgroundColor: cs.onSurface,
+              ),
+              const SizedBox(width: 10),
+              PrimaryButton(
+                label: 'Print',
+                icon: Icons.print,
+                onPressed: () {},
+                foregroundColor: cs.surface,
+                backgroundColor: cs.onSurface,
+              ),
+              const SizedBox(width: 20),
+
+              // Close button on right side
+              GestureDetector(
+                onTap: () => context.go('/finance'),
+                child: Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: cs.surfaceContainer,
+                  ),
+                  padding: const EdgeInsets.all(6),
+                  child: Icon(
+                    Icons.close,
+                    color: cs.onSurface,
+                    size: 18,
+                  ),
                 ),
               ),
-              const SizedBox(width: 8),
-
-              // Title Texts
-              Expanded(
-                flex: isTablet ? 3 : 5,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    RichText(
-                      text: TextSpan(
-                        style: text.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: cs.onSurface,
-                        ),
-                        children: [
-                          const TextSpan(text: 'Expense '),
-                          TextSpan(
-                            text: '#$expenseId',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 0.5,
-                            ),
-                          ),
-                        ],
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 3),
-                    Text(
-                      "View expense details and history",
-                      style: text.bodySmall?.copyWith(color: cs.onSurface),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
-              ),
-
-              const Spacer(),
             ],
           ),
-        ),
+        ],
       ),
     );
   }

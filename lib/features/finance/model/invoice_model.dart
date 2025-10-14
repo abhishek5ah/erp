@@ -1,24 +1,19 @@
 class Invoice {
-  final String id;
+  final String invoice_number;
   final String customer;
-  final String date;
-  final String dueDate;
+  final String invoice_date;
+  final String due_date;
   final String amount;
-  final String status;
-  final String email;
-  final String phone;
-  final String source;
+  final String invoice_status;
+
 
   Invoice({
-    required this.id,
+    required this.invoice_number,
     required this.customer,
-    required this.date,
-    required this.dueDate,
+    required this.invoice_date,
+    required this.due_date,
     required this.amount,
-    required this.status,
-    required this.email,
-    required this.phone,
-    required this.source,
+    required this.invoice_status,
   });
 }
 
