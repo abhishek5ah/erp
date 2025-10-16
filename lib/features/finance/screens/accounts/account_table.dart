@@ -4,8 +4,8 @@ import 'package:ppv_components/common_widgets/badge.dart';
 import 'package:ppv_components/common_widgets/button/toggle_button.dart';
 import 'package:ppv_components/common_widgets/custom_table.dart';
 import 'package:ppv_components/core/utils/finance_status_color.dart';
-import 'package:ppv_components/features/finance/data/mock_account_db.dart';
 import 'package:ppv_components/features/finance/screens/accounts/account_grid.dart';
+import 'package:ppv_components/features/finance/service/account_service.dart';
 
 class AccountTableView extends StatefulWidget {
   const AccountTableView({super.key});
@@ -16,6 +16,32 @@ class AccountTableView extends StatefulWidget {
 
 class _AccountTableViewState extends State<AccountTableView> {
   int toggleIndex = 0;
+  final service = AccountService();
+  List<dynamic> accounts = [];
+  bool loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchAccounts();
+  }
+
+  void fetchAccounts() async {
+    try {
+      final data = await service.loadAccounts();
+      if (!mounted) return;
+      setState(() {
+        accounts = data;
+        loading = false;
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        loading = false;
+      });
+      print('Error fetching accounts: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,32 +65,28 @@ class _AccountTableViewState extends State<AccountTableView> {
       ),
     ];
 
-    final rows = mockAccounts.map((account) {
+    final rows = accounts.map((account) {
+      final code = account['code']?.toString() ?? '-';
+      final name = account['name']?.toString() ?? '-';
+      final type = account['type']?.toString() ?? '-';
+      final balance = account['balance'] != null ? '\$${account['balance'].toString()}' : '-';
+
       return DataRow(
         cells: [
-          DataCell(
-            Text(account.code, style: TextStyle(color: colorScheme.onSurface)),
-          ),
-          DataCell(
-            Text(account.name, style: TextStyle(color: colorScheme.onSurface)),
-          ),
+          DataCell(Text(code, style: TextStyle(color: colorScheme.onSurface))),
+          DataCell(Text(name, style: TextStyle(color: colorScheme.onSurface))),
           DataCell(
             BadgeChip(
-              label: account.type,
-              statusKey: account.type,
+              label: type,
+              statusKey: type,
               statusColorFunc: getAccountStatusColor,
             ),
           ),
-          DataCell(
-            Text(
-              account.balance, // using the balance field from AccountModel
-              style: TextStyle(color: colorScheme.onSurface),
-            ),
-          ),
+          DataCell(Text(balance, style: TextStyle(color: colorScheme.onSurface))),
           DataCell(
             OutlinedButton(
               onPressed: () {
-                context.go('/finance/account/${account.code}');
+                context.go('/finance/account/$code');
               },
               style: OutlinedButton.styleFrom(
                 side: BorderSide(color: colorScheme.outline, width: 0.25),
@@ -127,9 +149,7 @@ class _AccountTableViewState extends State<AccountTableView> {
                               Text(
                                 'Manage your financial accounts',
                                 style: TextStyle(
-                                  color: colorScheme.onSurface.withValues(
-                                    alpha: 0.65,
-                                  ),
+                                  color: colorScheme.onSurface.withValues(alpha:0.65),
                                   fontSize: 16,
                                 ),
                               ),
@@ -147,9 +167,11 @@ class _AccountTableViewState extends State<AccountTableView> {
                     ),
                     const SizedBox(height: 12),
                     Expanded(
-                      child: toggleIndex == 0
+                      child: loading
+                          ? const Center(child: CircularProgressIndicator())
+                          : toggleIndex == 0
                           ? CustomTable(columns: columns, rows: rows)
-                          : AccountGridView(),
+                          : AccountGridView(accounts: accounts),
                     ),
                   ],
                 ),

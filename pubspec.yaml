@@ -22,6 +22,10 @@ dependencies:
   fluent_ui: ^4.12.0
   flutter_value_notifier: ^1.6.0
   printing: ^5.14.2
+  http: ^1.5.0               #for http request
+  grpc: ^4.1.0             #for grpc request
+  protobuf: ^4.2.0
+  flutter_dotenv: ^6.0.0
 
 
 

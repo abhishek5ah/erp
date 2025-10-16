@@ -4,8 +4,8 @@ import 'package:ppv_components/common_widgets/badge.dart';
 import 'package:ppv_components/common_widgets/button/toggle_button.dart';
 import 'package:ppv_components/common_widgets/custom_table.dart';
 import 'package:ppv_components/core/utils/finance_status_color.dart';
-import 'package:ppv_components/features/finance/data/mock_invoice_db.dart';
 import 'package:ppv_components/features/finance/screens/invoices/invoice_grid.dart';
+import 'package:ppv_components/features/finance/service/invoice_service.dart';
 
 class InvoiceTableView extends StatefulWidget {
   const InvoiceTableView({super.key});
@@ -17,8 +17,32 @@ class InvoiceTableView extends StatefulWidget {
 class _InvoiceTableViewState extends State<InvoiceTableView> {
   int tabIndex = 0;
   int toggleIndex = 0;
-  
-  
+
+  final service = FinanceService();
+  List<dynamic> invoices = [];
+  bool loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchInvoices();
+  }
+
+  void fetchInvoices() async {
+    try {
+      final data = await service.loadInvoices();
+      if (!mounted) return; // <-- prevent setState after dispose
+      setState(() {
+        invoices = data;
+        loading = false;
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() => loading = false);
+      print("Error fetching invoices: $e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -50,50 +74,36 @@ class _InvoiceTableViewState extends State<InvoiceTableView> {
       ),
     ];
 
-    // Table rows from mock DB
-    final rows = mockInvoices.map((invoice) {
+    final rows = invoices.map((invoice) {
       return DataRow(
         cells: [
           DataCell(
-            Text(invoice.invoice_number, style: TextStyle(color: colorScheme.onSurface)),
+            Text(invoice['invoice_number'] ?? '-', style: TextStyle(color: colorScheme.onSurface)),
           ),
           DataCell(
-            Text(
-              invoice.customer,
-              style: TextStyle(color: colorScheme.onSurface),
-            ),
+            Text(invoice['customer'] ?? '-', style: TextStyle(color: colorScheme.onSurface)),
           ),
           DataCell(
-            Text(invoice.invoice_date, style: TextStyle(color: colorScheme.onSurface)),
+            Text(invoice['invoice_date'] ?? '-', style: TextStyle(color: colorScheme.onSurface)),
           ),
           DataCell(
-            Text(
-              invoice.due_date,
-              style: TextStyle(color: colorScheme.onSurface),
-            ),
+            Text(invoice['due_date'] ?? '-', style: TextStyle(color: colorScheme.onSurface)),
           ),
           DataCell(
-            Text(
-              invoice.amount,
-              style: TextStyle(color: colorScheme.onSurface),
-            ),
+            Text(invoice['amount']?.toString() ?? '-', style: TextStyle(color: colorScheme.onSurface)),
           ),
-
           DataCell(
             BadgeChip(
-              label: invoice.invoice_status,
-              statusKey: invoice.invoice_status, // pass status string
+              label: invoice['invoice_status'] ?? '-',
+              statusKey: invoice['invoice_status'] ?? '-',
               statusColorFunc: invoiceStatusColor,
             ),
           ),
-
-
           DataCell(
             OutlinedButton(
               onPressed: () {
-                context.go('/finance/invoices/${invoice.invoice_number}');
+                context.go('/finance/invoices/${invoice['number']}');
               },
-
               style: OutlinedButton.styleFrom(
                 side: BorderSide(
                   color: colorScheme.outline.withValues(alpha: 0.3),
@@ -103,10 +113,7 @@ class _InvoiceTableViewState extends State<InvoiceTableView> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18),
                 ),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 22,
-                  vertical: 8,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 8),
               ),
               child: Text(
                 'View',
@@ -159,9 +166,7 @@ class _InvoiceTableViewState extends State<InvoiceTableView> {
                               Text(
                                 'Manage and track your customer invoices',
                                 style: TextStyle(
-                                  color: colorScheme.onSurface.withValues(
-                                    alpha: 0.65,
-                                  ),
+                                  color: colorScheme.onSurface.withValues(alpha: 0.65),
                                   fontSize: 15,
                                 ),
                               ),
@@ -179,9 +184,11 @@ class _InvoiceTableViewState extends State<InvoiceTableView> {
                     ),
                     const SizedBox(height: 12),
                     Expanded(
-                      child: toggleIndex == 0
+                      child: loading
+                          ? const Center(child: CircularProgressIndicator())
+                          : toggleIndex == 0
                           ? CustomTable(columns: columns, rows: rows)
-                          : InvoiceGridView(),
+                          : InvoiceGridView(invoices: invoices), // pass API data to grid
                     ),
                   ],
                 ),

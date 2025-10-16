@@ -5,9 +5,9 @@ import 'package:ppv_components/common_widgets/button/primary_button.dart';
 import 'package:ppv_components/common_widgets/button/toggle_button.dart';
 import 'package:ppv_components/common_widgets/custom_table.dart';
 import 'package:ppv_components/core/utils/finance_status_color.dart';
-import 'package:ppv_components/features/finance/data/mock_expense_db.dart';
 import 'package:ppv_components/features/finance/screens/expenses/screens/expense_grid.dart';
 import 'package:ppv_components/features/finance/screens/expenses/widgets/add_expense_form.dart';
+import 'package:ppv_components/features/finance/service/expense_service.dart';
 
 class ExpenseTableView extends StatefulWidget {
   const ExpenseTableView({super.key});
@@ -18,16 +18,39 @@ class ExpenseTableView extends StatefulWidget {
 
 class _ExpenseTableViewState extends State<ExpenseTableView> {
   int toggleIndex = 0;
+  final ExpenseService service = ExpenseService();
+  List<dynamic> expenses = [];
+  bool loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchExpenses();
+  }
+
+  void fetchExpenses() async {
+    try {
+      final data = await service.loadExpenses();
+      if (!mounted) return;
+      setState(() {
+        expenses = data;
+        loading = false;
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        loading = false;
+      });
+      print('Error fetching expenses: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final columns = [
       DataColumn(
-        label: Text(
-          'Expense',
-          style: TextStyle(color: colorScheme.onSurface),
-        ),
+        label: Text('Expense', style: TextStyle(color: colorScheme.onSurface)),
       ),
       DataColumn(
         label: Text('Vendor', style: TextStyle(color: colorScheme.onSurface)),
@@ -49,69 +72,57 @@ class _ExpenseTableViewState extends State<ExpenseTableView> {
       ),
     ];
 
-    final rows = mockExpenses.map((expense) {
+    final rows = expenses.map((expense) {
+      final id = expense['id']?.toString() ?? '-';
+      final vendor = expense['vendor']?.toString() ?? '-';
+      final date = expense['date']?.toString() ?? '-';
+      final category = expense['category']?.toString() ?? '-';
+      final amount = expense['amount'] != null
+          ? expense['amount'].toString()
+          : '-';
+      final status = expense['status']?.toString() ?? '-';
+
       return DataRow(
         cells: [
+          DataCell(Text(id, style: TextStyle(color: colorScheme.onSurface))),
+          DataCell(Text(vendor, style: TextStyle(color: colorScheme.onSurface))),
+          DataCell(Text(date, style: TextStyle(color: colorScheme.onSurface))),
+          DataCell(Text(category, style: TextStyle(color: colorScheme.onSurface))),
+          DataCell(Text(amount, style: TextStyle(color: colorScheme.onSurface))),
           DataCell(
-            Text(expense.id, style: TextStyle(color: colorScheme.onSurface)),
-          ),
-          DataCell(
-            Text(
-              expense.vendor,
-              style: TextStyle(color: colorScheme.onSurface),
-            ),
-          ),
-          DataCell(
-            Text(expense.date, style: TextStyle(color: colorScheme.onSurface)),
-          ),
-          DataCell(
-            Text(
-              expense.category,
-              style: TextStyle(color: colorScheme.onSurface),
-            ),
-          ),
-          DataCell(
-            Text(
-              expense.amount,
-              style: TextStyle(color: colorScheme.onSurface),
-            ),
-          ),
-          DataCell(
-
             BadgeChip(
-              label: expense.status,
-              statusKey: expense.status, // pass status string
+              label: status,
+              statusKey: status,
               statusColorFunc: expenseStatusColor,
             ),
           ),
           DataCell(
-              OutlinedButton(
-                onPressed: () {
-                  context.go('/finance/expense/${expense.id}');
-
-                },
-                style: OutlinedButton.styleFrom(
-                  side: BorderSide(
-                    color: colorScheme.outline.withAlpha(77),
-                    width: 1.8,
-                  ),
-                  foregroundColor: colorScheme.onSurface,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18),
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 22,
-                    vertical: 8,
-                  ),
+            OutlinedButton(
+              onPressed: () {
+                context.go('/finance/expense/$id');
+              },
+              style: OutlinedButton.styleFrom(
+                side: BorderSide(
+                  color: colorScheme.outline.withAlpha(77),
+                  width: 1.8,
                 ),
-                child: Text(
-                  'View',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: colorScheme.onSurface,
-                  ),
+                foregroundColor: colorScheme.onSurface,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18),
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 22,
+                  vertical: 8,
                 ),
               ),
+              child: Text(
+                'View',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: colorScheme.onSurface,
+                ),
+              ),
+            ),
           ),
         ],
       );
@@ -155,16 +166,13 @@ class _ExpenseTableViewState extends State<ExpenseTableView> {
                               Text(
                                 'Manage and track your expenses',
                                 style: TextStyle(
-                                  color: colorScheme.onSurface.withValues(
-                                    alpha: 0.65,
-                                  ),
+                                  color: colorScheme.onSurface.withAlpha(165),
                                   fontSize: 15,
                                 ),
                               ),
                             ],
                           ),
                         ),
-
                         ToggleBtn(
                           labels: const ['Table Form', 'Grid Form'],
                           selectedIndex: toggleIndex,
@@ -189,11 +197,13 @@ class _ExpenseTableViewState extends State<ExpenseTableView> {
                       ],
                     ),
                     const SizedBox(height: 12),
-                    //  Table or Grid based on toggle index
+                    // Table or Grid based on toggle index
                     Expanded(
-                      child: toggleIndex == 0
+                      child: loading
+                          ? const Center(child: CircularProgressIndicator())
+                          : toggleIndex == 0
                           ? CustomTable(columns: columns, rows: rows)
-                          : ExpenseGrid(), // expense grid widget
+                          : ExpenseGrid(expenses: expenses),
                     ),
                   ],
                 ),
